@@ -346,8 +346,8 @@ bool DrawSingleGlyph(TTF_Font *font, const UnicodeChar &unicodechar, const char 
 
 bool DrawAndMergeGlyphs(TTF_Font *font, const std::vector<UnicodeChar> &unicodechars, const char *output_png)
 {
-    int height = (unicodechars.size() / line_Characters) * border_long + (unicodechars.size() % line_Characters ? border_long : 0);
-    SDL_Surface *output_surface = SDL_CreateRGBSurfaceWithFormat(0, line_width, height, 24, SDL_PIXELFORMAT_RGB888);
+    int lines = static_cast<int>(std::ceil(static_cast<double>(unicodechars.size()) / line_width)) * border_long + border_long;
+    SDL_Surface *output_surface = SDL_CreateRGBSurfaceWithFormat(0, line_width, lines * border_long, 24, SDL_PIXELFORMAT_RGB888);
     if (!output_surface)
     {
         std::cerr << "Failed to create output surface: " << SDL_GetError() << std::endl;

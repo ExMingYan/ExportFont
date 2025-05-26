@@ -10,6 +10,7 @@
 #include <vector>
 #include <stdint.h>
 #include <filesystem>
+#include <cmath>
 
 struct UnicodeChar
 {
