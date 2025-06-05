@@ -10,7 +10,20 @@
 #include <vector>
 #include <stdint.h>
 #include <filesystem>
-#include <cmath>
+
+const int32_t line_Characters = 16;
+const int32_t border_long = 16;
+const int32_t section_characters = 247;
+const int32_t line_width = line_Characters * border_long;
+const SDL_Color glyph_color = {56, 56, 56, 255}, shadow_color = {127, 127, 127, 255};
+const SDL_Color background_color = {255, 255, 255, 255}, transparent_color = {0, 0, 0, 255};
+const SDL_Color palette[4] =
+{
+    transparent_color,
+    glyph_color,
+    shadow_color,
+    background_color
+};
 
 struct UnicodeChar
 {

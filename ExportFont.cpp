@@ -1,18 +1,5 @@
 #include "ExportFont.hpp"
 
-const int32_t line_Characters = 16;
-const int32_t border_long = 16;
-const int32_t line_width = line_Characters * border_long;
-const SDL_Color glyph_color = {56, 56, 56, 255}, shadow_color = {127, 127, 127, 255};
-const SDL_Color background_color = {255, 255, 255, 255}, transparent_color = {0, 0, 0, 255};
-const SDL_Color palette[4] =
-{
-    transparent_color,
-    glyph_color,
-    shadow_color,
-    background_color
-};
-
 int main(int argc, char *argv[])
 {
     if (TTF_Init() == -1)
@@ -346,7 +333,9 @@ bool DrawSingleGlyph(TTF_Font *font, const UnicodeChar &unicodechar, const char 
 
 bool DrawAndMergeGlyphs(TTF_Font *font, const std::vector<UnicodeChar> &unicodechars, const char *output_png)
 {
-    int lines = static_cast<int>(std::ceil(static_cast<double>(unicodechars.size()) / line_width)) * border_long + border_long;
+    int unisize = unicodechars.size();
+    int modichars = unisize % section_characters;
+    int lines = (unisize / section_characters * border_long) + (modichars / line_Characters) + (modichars % line_Characters > 0);
     SDL_Surface *output_surface = SDL_CreateRGBSurfaceWithFormat(0, line_width, lines * border_long, 24, SDL_PIXELFORMAT_RGB888);
     if (!output_surface)
     {
@@ -364,7 +353,7 @@ bool DrawAndMergeGlyphs(TTF_Font *font, const std::vector<UnicodeChar> &unicodec
             std::cerr << "Failed on drawing glyph: " << unicode_char.unicode << std::endl;
             continue;
         }
-        if ((++index) % line_width == 247)
+        if ((++index) % line_width == section_characters)
         {
             index += 9;
         }
