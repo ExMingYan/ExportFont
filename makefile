@@ -1,9 +1,9 @@
 CXX ?= g++
-CXXFLAGS := -std=gnu++17 -Wall -Wextra -Ofast
+CXXFLAGS := -std=gnu++17 -Wall -Wextra -Ofast -s
 
 ifeq ($(OS), Windows_NT)
 EXE = .exe
-LDFLAGS := $(shell pkg-config --static --libs sdl2 SDL2_image SDL2_ttf) -mconsole
+LDFLAGS := $(shell pkg-config --static --libs sdl2 SDL2_image SDL2_ttf) -mconsole -static
 else
 EXE =
 LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_ttf
