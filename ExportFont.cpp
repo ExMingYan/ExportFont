@@ -25,7 +25,7 @@ bool parseArgs(int argc, char *argv[])
     }
     try
     {
-        const char *font_path = argv[1];
+        const char *font_path = strip_quotes(argv[1]).c_str();
         for (int i = 2; i < argc;)
         {
             std::string option = argv[i++];
@@ -53,7 +53,7 @@ bool parseArgs(int argc, char *argv[])
                 }
                 std::string characters = argv[i++];
                 UnicodeChar unicode_char = utf8_to_unicode(characters);
-                const char *output_dir = argv[i++];
+                const char *output_dir = strip_quotes(argv[i++]).c_str();
                 if (!DrawSingleGlyph(font, unicode_char, output_dir))
                 {
                     std::cerr << "Failed to draw single glyph" << std::endl;
@@ -70,7 +70,7 @@ bool parseArgs(int argc, char *argv[])
                     TTF_CloseFont(font);
                     return false;
                 }
-                const char *output_dir = argv[i++];
+                const char *output_dir = strip_quotes(argv[i++]).c_str();
                 std::vector<UnicodeChar> unicode_chars;
                 if (!GetUnicodeCharsFromTTF(font, unicode_chars))
                 {
@@ -94,7 +94,7 @@ bool parseArgs(int argc, char *argv[])
                     TTF_CloseFont(font);
                     return false;
                 }
-                const char *output_png = argv[i++];
+                const char *output_png = strip_quotes(argv[i++]).c_str();
                 std::vector<UnicodeChar> unicode_chars;
                 if (!GetUnicodeCharsFromTTF(font, unicode_chars))
                 {
@@ -118,8 +118,8 @@ bool parseArgs(int argc, char *argv[])
                     TTF_CloseFont(font);
                     return false;
                 }
-                const char *charmap_path = argv[i++];
-                const char *output_dir = argv[i++];
+                const char *charmap_path = strip_quotes(argv[i++]).c_str();
+                const char *output_dir = strip_quotes(argv[i++]).c_str();
                 std::vector<UnicodeChar> unicode_chars;
                 if (!GetUnicodeCharsFromCharmap(charmap_path, unicode_chars))
                 {
@@ -143,8 +143,8 @@ bool parseArgs(int argc, char *argv[])
                     TTF_CloseFont(font);
                     return false;
                 }
-                const char *charmap_path = argv[i++];
-                const char *output_png = argv[i++];
+                const char *charmap_path = strip_quotes(argv[i++]).c_str();
+                const char *output_png = strip_quotes(argv[i++]).c_str();
                 std::vector<UnicodeChar> unicode_chars;
                 if (!GetUnicodeCharsFromCharmap(charmap_path, unicode_chars))
                 {
@@ -456,4 +456,13 @@ void save_surface_to_png(SDL_Surface *surface, const char *&filename)
     }
 
     SDL_FreeSurface(indexed_surface);
+}
+
+std::string strip_quotes(const std::string &filename)
+{
+    if (filename.size() >= 2 && filename.front() == '"' && filename.back() == '"')
+    {
+        return filename.substr(1, filename.size() - 2);
+    }
+    return filename;
 }

@@ -44,4 +44,6 @@ bool DrawAndMergeGlyphs(TTF_Font *font, const std::vector<UnicodeChar> &unicodec
 bool DrawGlyph(TTF_Font *font, const uint32_t &unicode_char, SDL_Surface *&output_surface, int32_t x, int32_t y);
 void save_surface_to_png(SDL_Surface *surface, const char *&filename);
 
+std::string strip_quotes(const std::string &filename);
+
 #endif // EXPORTFONT_HPP
